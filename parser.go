@@ -89,11 +89,12 @@ func (p *Parser) ParseWithClaims(tokenString string, claims Claims, keyFunc Keyf
 	}
 
 	// Lookup key
-	var key interface{}
+	//  var key interface{}
 	if keyFunc == nil {
 		// keyFunc was not provided.  short circuiting validation
 		return token, NewValidationError("no Keyfunc was provided.", ValidationErrorUnverifiable)
 	}
+	var key interface{}
 	if key, err = keyFunc(token); err != nil {
 		// keyFunc returned an error
 		return token, &ValidationError{Inner: err, Errors: ValidationErrorUnverifiable}
@@ -115,17 +116,17 @@ func (p *Parser) ParseWithClaims(tokenString string, claims Claims, keyFunc Keyf
 		}
 	}
 
-	// Perform validation
-	//token.Signature = parts[2]
-	//if err = token.Method.Verify(strings.Join(parts[0:2], "."), token.Signature, key); err != nil {
-	//	vErr.Inner = err
-	//	vErr.Errors |= ValidationErrorSignatureInvalid
-	//}
-	//
-	//if vErr.valid() {
-	//	token.Valid = true
-	//	return token, nil
-	//}
+	
+	token.Signature = parts[2]
+	if err = token.Method.Verify(strings.Join(parts[0:2], "."), token.Signature, key); err != nil {
+		vErr.Inner = err
+		vErr.Errors |= ValidationErrorSignatureInvalid
+	}
+
+	if vErr.valid() {
+		token.Valid = true
+		return token, nil
+	}
 
 	return token, vErr
 }
