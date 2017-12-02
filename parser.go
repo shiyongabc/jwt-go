@@ -116,16 +116,16 @@ func (p *Parser) ParseWithClaims(tokenString string, claims Claims, keyFunc Keyf
 	}
 
 	// Perform validation
-	token.Signature = parts[2]
-	if err = token.Method.Verify(strings.Join(parts[0:2], "."), token.Signature, key); err != nil {
-		vErr.Inner = err
-		vErr.Errors |= ValidationErrorSignatureInvalid
-	}
-
-	if vErr.valid() {
-		token.Valid = true
-		return token, nil
-	}
+	//token.Signature = parts[2]
+	//if err = token.Method.Verify(strings.Join(parts[0:2], "."), token.Signature, key); err != nil {
+	//	vErr.Inner = err
+	//	vErr.Errors |= ValidationErrorSignatureInvalid
+	//}
+	//
+	//if vErr.valid() {
+	//	token.Valid = true
+	//	return token, nil
+	//}
 
 	return token, vErr
 }
